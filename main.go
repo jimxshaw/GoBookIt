@@ -1,15 +1,18 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"time"
+)
 
 func main() {
 
 	var eventName = "Go Conf"
-	const eventTickets = 100
+	const totalTickets = 100
 	var remainingTickets = 100
 
 	fmt.Println("GoBookIt is your premier booking app!")
-	fmt.Println("There are", eventTickets, "tickets total and", remainingTickets, "tickets remaining")
-	fmt.Println("Get tickets to", eventName, "here")
+	fmt.Printf("There are %v tickets total and %v tickets remaining\n", totalTickets, remainingTickets)
+	fmt.Printf("Get tickets to %v %v here\n", eventName, time.Now().Year())
 
 }
