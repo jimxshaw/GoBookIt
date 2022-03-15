@@ -35,7 +35,7 @@ func main() {
 
 		if userTickets > remainingTickets {
 			fmt.Printf("Invalid input. Only %v tickets left.\n", remainingTickets)
-			break
+			continue
 		}
 
 		remainingTickets = remainingTickets - userTickets
