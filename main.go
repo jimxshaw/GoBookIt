@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"strconv"
+	"strings"
 	"time"
 )
 
@@ -34,12 +35,19 @@ func main() {
 
 		remainingTickets = remainingTickets - userTickets
 
-		bookings = append(bookings, userName)
+		bookings = append(bookings, userName+" "+email)
 
 		fmt.Printf("User %v booked %v tickets. Confirmation will be sent to the email %v.\n", userName, userTickets, email)
 		fmt.Printf("%v tickets remaining for %v\n", remainingTickets, eventName)
 
-		fmt.Printf("Current bookings: %v\n", bookings)
+		userNames := []string{}
+
+		for _, booking := range bookings {
+			var userInfo = strings.Fields(booking)
+			userNames = append(userNames, userInfo[0])
+		}
+
+		fmt.Printf("Usernames of current bookings: %v\n", userNames)
 	}
 
 }
