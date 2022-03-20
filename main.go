@@ -7,25 +7,26 @@ import (
 	"time"
 )
 
+const totalTickets = 100
+
+var eventName string = "Go Conf " + strconv.Itoa(time.Now().Year())
+var remainingTickets uint = 100
+var bookings []string
+
 func main() {
 
-	eventName := "Go Conf " + strconv.Itoa(time.Now().Year())
-	const totalTickets = 100
-	var remainingTickets uint = 100
-	var bookings []string
-
-	greetUsers(eventName, totalTickets, remainingTickets)
+	greetUsers()
 
 	for {
 		userName, email, userTickets := getUserInput()
 
-		isValidUserName, isValidEmail, isValidTicketNumber := validateUserInput(userName, email, userTickets, remainingTickets)
+		isValidUserName, isValidEmail, isValidTicketNumber := validateUserInput(userName, email, userTickets)
 
 		if isValidUserName && isValidEmail && isValidTicketNumber {
-			bookTicket(remainingTickets, userTickets, eventName, userName, email, bookings)
+			bookTicket(userTickets, eventName, userName, email)
 
 			// Get usernames.
-			userNames := getUserNames(bookings)
+			userNames := getUserNames()
 			fmt.Printf("Usernames of current bookings: %v\n", userNames)
 
 			atBookingCapacity := remainingTickets == 0
@@ -54,13 +55,13 @@ func main() {
 
 }
 
-func greetUsers(eventName string, totalTickets int, remainingTickets uint) {
+func greetUsers() {
 	fmt.Printf("Welcome to %v booking application\n", eventName)
 	fmt.Printf("There are %v tickets total and %v tickets remaining\n", totalTickets, remainingTickets)
 	fmt.Println("Get tickets here!")
 }
 
-func getUserNames(bookings []string) []string {
+func getUserNames() []string {
 	userNames := []string{}
 
 	for _, booking := range bookings {
@@ -71,7 +72,7 @@ func getUserNames(bookings []string) []string {
 	return userNames
 }
 
-func validateUserInput(userName, email string, userTickets uint, remainingTickets uint) (bool, bool, bool) {
+func validateUserInput(userName, email string, userTickets uint) (bool, bool, bool) {
 	isValidUserName := len(userName) >= 2
 	isValidEmail := strings.Contains(email, "@")
 	isValidTicketNumber := userTickets > 0 && userTickets <= remainingTickets
@@ -97,7 +98,7 @@ func getUserInput() (string, string, uint) {
 	return userName, email, userTickets
 }
 
-func bookTicket(remainingTickets, userTickets uint, eventName, userName, email string, bookings []string) {
+func bookTicket(userTickets uint, eventName, userName, email string) {
 	remainingTickets = remainingTickets - userTickets
 
 	bookings = append(bookings, userName+" "+email)
