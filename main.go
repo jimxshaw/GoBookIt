@@ -17,19 +17,7 @@ func main() {
 	greetUsers(eventName, totalTickets, remainingTickets)
 
 	for {
-		var userName string
-		var email string
-		var userTickets uint
-
-		// Get user input.
-		fmt.Println("Enter your user name: ")
-		fmt.Scan(&userName)
-
-		fmt.Println("Enter your email address: ")
-		fmt.Scan(&email)
-
-		fmt.Println("Enter number of tickets to book: ")
-		fmt.Scan(&userTickets)
+		userName, email, userTickets := getUserInput()
 
 		isValidUserName, isValidEmail, isValidTicketNumber := validateUserInput(userName, email, userTickets, remainingTickets)
 
@@ -94,4 +82,22 @@ func validateUserInput(userName, email string, userTickets uint, remainingTicket
 	isValidTicketNumber := userTickets > 0 && userTickets <= remainingTickets
 
 	return isValidUserName, isValidEmail, isValidTicketNumber
+}
+
+func getUserInput() (string, string, uint) {
+	var userName string
+	var email string
+	var userTickets uint
+
+	// Get user input.
+	fmt.Println("Enter your user name: ")
+	fmt.Scan(&userName)
+
+	fmt.Println("Enter your email address: ")
+	fmt.Scan(&email)
+
+	fmt.Println("Enter number of tickets to book: ")
+	fmt.Scan(&userTickets)
+
+	return userName, email, userTickets
 }
