@@ -14,9 +14,7 @@ func main() {
 	var remainingTickets uint = 100
 	var bookings []string
 
-	fmt.Println("GoBookIt is your premier booking app!")
-	fmt.Printf("There are %v tickets total and %v tickets remaining\n", totalTickets, remainingTickets)
-	fmt.Printf("Get tickets to %v here\n", eventName)
+	greetUsers(eventName, totalTickets, remainingTickets)
 
 	for {
 		var userName string
@@ -77,5 +75,12 @@ func main() {
 		}
 
 	}
+
+}
+
+func greetUsers(eventName string, totalTickets int, remainingTickets uint) {
+	fmt.Printf("Welcome to %v booking application\n", eventName)
+	fmt.Printf("There are %v tickets total and %v tickets remaining\n", totalTickets, remainingTickets)
+	fmt.Println("Get tickets here!")
 
 }
