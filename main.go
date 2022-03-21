@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"gobookit/helpers"
 	"strconv"
 	"strings"
 	"time"
@@ -20,7 +21,7 @@ func main() {
 	for {
 		userName, email, userTickets := getUserInput()
 
-		isValidUserName, isValidEmail, isValidTicketNumber := validateUserInput(userName, email, userTickets)
+		isValidUserName, isValidEmail, isValidTicketNumber := helpers.ValidateUserInput(userName, email, userTickets, remainingTickets)
 
 		if isValidUserName && isValidEmail && isValidTicketNumber {
 			bookTicket(userTickets, eventName, userName, email)
