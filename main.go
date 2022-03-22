@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"gobookit/helpers"
 	"strconv"
-	"strings"
 	"time"
 )
 
@@ -12,7 +11,9 @@ const totalTickets = 100
 
 var eventName string = "Go Conf " + strconv.Itoa(time.Now().Year())
 var remainingTickets uint = 100
-var bookings []string
+
+// Create initial empty Slice of Maps.
+var bookings = make([]map[string]string, 0)
 
 func main() {
 
@@ -66,8 +67,7 @@ func getUserNames() []string {
 	userNames := []string{}
 
 	for _, booking := range bookings {
-		var userInfo = strings.Fields(booking)
-		userNames = append(userNames, userInfo[0])
+		userNames = append(userNames, booking["userName"])
 	}
 
 	return userNames
@@ -94,7 +94,16 @@ func getUserInput() (string, string, uint) {
 func bookTicket(userTickets uint, eventName, userName, email string) {
 	remainingTickets = remainingTickets - userTickets
 
-	bookings = append(bookings, userName+" "+email)
+	// Create a Map for a user.
+	var userData = make(map[string]string)
+	userData["userName"] = userName
+	userData["email"] = email
+	userData["eventName"] = eventName
+	userData["userTickets"] = strconv.FormatUint(uint64(userTickets), 10)
+
+	// Add Map to Slice.
+	bookings = append(bookings, userData)
+	fmt.Printf("List of bookings is %v\n", bookings)
 
 	fmt.Printf("User %v booked %v tickets. Confirmation will be sent to the email %v.\n", userName, userTickets, email)
 	fmt.Printf("%v tickets remaining for %v\n", remainingTickets, eventName)
