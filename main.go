@@ -26,41 +26,37 @@ func main() {
 
 	greetUsers()
 
-	for {
-		userName, email, userTickets := getUserInput()
+	userName, email, userTickets := getUserInput()
 
-		isValidUserName, isValidEmail, isValidTicketNumber := helpers.ValidateUserInput(userName, email, userTickets, remainingTickets)
+	isValidUserName, isValidEmail, isValidTicketNumber := helpers.ValidateUserInput(userName, email, userTickets, remainingTickets)
 
-		if isValidUserName && isValidEmail && isValidTicketNumber {
-			bookTicket(userTickets, eventName, userName, email)
+	if isValidUserName && isValidEmail && isValidTicketNumber {
+		bookTicket(userTickets, eventName, userName, email)
 
-			// Make this function call concurrent.
-			go sendTicket(userTickets, eventName, userName, email)
+		// Make this function call concurrent.
+		go sendTicket(userTickets, eventName, userName, email)
 
-			// Get usernames.
-			userNames := getUserNames()
-			fmt.Printf("Usernames of current bookings: %v\n", userNames)
+		// Get usernames.
+		userNames := getUserNames()
+		fmt.Printf("Usernames of current bookings: %v\n", userNames)
 
-			atBookingCapacity := remainingTickets == 0
+		atBookingCapacity := remainingTickets == 0
 
-			if atBookingCapacity {
-				// End the program.
-				fmt.Printf("%v is at capacity bookings. Please return next year!\n", eventName)
-				break
-			}
-		} else {
-			if !isValidEmail {
-				fmt.Println("Invalid email. Try again.")
-			}
+		if atBookingCapacity {
+			// End the program.
+			fmt.Printf("%v is at capacity bookings. Please return next year!\n", eventName)
+		}
+	} else {
+		if !isValidEmail {
+			fmt.Println("Invalid email. Try again.")
+		}
 
-			if !isValidUserName {
-				fmt.Println("Invalid username. Try again.")
-			}
+		if !isValidUserName {
+			fmt.Println("Invalid username. Try again.")
+		}
 
-			if !isValidTicketNumber {
-				fmt.Println("Invalid ticket number. Try again.")
-			}
-
+		if !isValidTicketNumber {
+			fmt.Println("Invalid ticket number. Try again.")
 		}
 
 	}
