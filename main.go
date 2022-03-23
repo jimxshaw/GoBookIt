@@ -13,7 +13,14 @@ var eventName string = "Go Conf " + strconv.Itoa(time.Now().Year())
 var remainingTickets uint = 100
 
 // Create initial empty Slice of Maps.
-var bookings = make([]map[string]string, 0)
+var bookings = make([]UserData, 0)
+
+type UserData struct {
+	userName    string
+	email       string
+	userTickets uint
+	eventName   string
+}
 
 func main() {
 
@@ -67,7 +74,7 @@ func getUserNames() []string {
 	userNames := []string{}
 
 	for _, booking := range bookings {
-		userNames = append(userNames, booking["userName"])
+		userNames = append(userNames, booking.userName)
 	}
 
 	return userNames
@@ -95,11 +102,12 @@ func bookTicket(userTickets uint, eventName, userName, email string) {
 	remainingTickets = remainingTickets - userTickets
 
 	// Create a Map for a user.
-	var userData = make(map[string]string)
-	userData["userName"] = userName
-	userData["email"] = email
-	userData["eventName"] = eventName
-	userData["userTickets"] = strconv.FormatUint(uint64(userTickets), 10)
+	var userData = UserData{
+		userName:    userName,
+		email:       email,
+		eventName:   eventName,
+		userTickets: userTickets,
+	}
 
 	// Add Map to Slice.
 	bookings = append(bookings, userData)
