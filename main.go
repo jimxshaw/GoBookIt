@@ -34,7 +34,8 @@ func main() {
 		if isValidUserName && isValidEmail && isValidTicketNumber {
 			bookTicket(userTickets, eventName, userName, email)
 
-			sendTicket(userTickets, eventName, userName, email)
+			// Make this function call concurrent.
+			go sendTicket(userTickets, eventName, userName, email)
 
 			// Get usernames.
 			userNames := getUserNames()
@@ -120,6 +121,9 @@ func bookTicket(userTickets uint, eventName, userName, email string) {
 }
 
 func sendTicket(userTickets uint, eventName, userName, email string) {
+	// Simulate delay in sending ticket.
+	time.Sleep(5 * time.Second)
+
 	var ticket = fmt.Sprintf("%v %v tickets for %v\n", userTickets, eventName, userName)
 	fmt.Println("************************************")
 	fmt.Printf("Sending ticket:\n %v to email %v\n", ticket, email)
