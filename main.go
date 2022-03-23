@@ -34,6 +34,8 @@ func main() {
 		if isValidUserName && isValidEmail && isValidTicketNumber {
 			bookTicket(userTickets, eventName, userName, email)
 
+			sendTicket(userTickets, eventName, userName, email)
+
 			// Get usernames.
 			userNames := getUserNames()
 			fmt.Printf("Usernames of current bookings: %v\n", userNames)
@@ -111,8 +113,15 @@ func bookTicket(userTickets uint, eventName, userName, email string) {
 
 	// Add Map to Slice.
 	bookings = append(bookings, userData)
-	fmt.Printf("List of bookings is %v\n", bookings)
+	fmt.Printf("List of bookings: %v\n", bookings)
 
 	fmt.Printf("User %v booked %v tickets. Confirmation will be sent to the email %v.\n", userName, userTickets, email)
 	fmt.Printf("%v tickets remaining for %v\n", remainingTickets, eventName)
+}
+
+func sendTicket(userTickets uint, eventName, userName, email string) {
+	var ticket = fmt.Sprintf("%v %v tickets for %v\n", userTickets, eventName, userName)
+	fmt.Println("************************************")
+	fmt.Printf("Sending ticket:\n %v to email %v\n", ticket, email)
+	fmt.Println("************************************")
 }
