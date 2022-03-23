@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"gobookit/helpers"
 	"strconv"
+	"sync"
 	"time"
 )
 
@@ -22,6 +23,9 @@ type UserData struct {
 	eventName   string
 }
 
+// Waits for launched goroutines to finish.
+var waitGroup = sync.WaitGroup{}
+
 func main() {
 
 	greetUsers()
@@ -33,7 +37,12 @@ func main() {
 	if isValidUserName && isValidEmail && isValidTicketNumber {
 		bookTicket(userTickets, eventName, userName, email)
 
+		// Sets the number of goroutines to wait for.
+		waitGroup.Add(1)
+
 		// Make this function call concurrent.
+		// The number of goroutines is the number to
+		// be added to the wait group.
 		go sendTicket(userTickets, eventName, userName, email)
 
 		// Get usernames.
@@ -60,6 +69,14 @@ func main() {
 		}
 
 	}
+
+	// Wait should be called at the end
+	// of the main thread. This blocks the
+	// main thread until wait group counter is 0.
+	// Essentially main thread waits until all
+	// the theads that have been added with Add
+	// are done before the Application can exit.
+	waitGroup.Wait()
 
 }
 
@@ -124,4 +141,11 @@ func sendTicket(userTickets uint, eventName, userName, email string) {
 	fmt.Println("************************************")
 	fmt.Printf("Sending ticket:\n %v to email %v\n", ticket, email)
 	fmt.Println("************************************")
+
+	// Done decrements the wait group counter by 1.
+	// This is called by the goroutine to show
+	// that it's finished.
+	// Once this is finished then the main thread
+	// wouldn't have to wait anymore.
+	waitGroup.Done()
 }
